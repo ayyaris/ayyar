@@ -55,7 +55,7 @@ Index: target/linux/ramips/files/arch/mips/ralink/rt305x/mach-ayyar-v2.c
 +++ target/linux/ramips/files/arch/mips/ralink/rt305x/mach-ayyar-v2.c	(working copy)
 @@ -0,0 +1,108 @@
 +/*
-+ *  HAME AYYAR-V2 board support by Michel Stempin <michel.stempin@wanadoo.fr>
++ *  AYYAR-V2 board support by Ayyari Abdennaby <ayyari@me.com>
 + *  Based on previous work by arpunk, arteq, Heffer & p1vo from OpenWrt forum.
 + * 
 + *
@@ -160,7 +160,7 @@ Index: target/linux/ramips/files/arch/mips/ralink/rt305x/mach-ayyar-v2.c
 +        rt305x_register_usb();
 +}
 +
-+MIPS_MACHINE(RAMIPS_MACH_AYYAR_V2, "AYYAR-V2", "HAME AYYAR-V2",
++MIPS_MACHINE(RAMIPS_MACH_AYYAR_V2, "AYYAR-V2", "AYYAR-V2 Board",
 +             ayyar_v2_init);
 Index: target/linux/ramips/files/arch/mips/include/asm/mach-ralink/machine.h
 ===================================================================
@@ -197,7 +197,7 @@ Index: target/linux/ramips/rt305x/profiles/hame.mk
 +#
 +
 +define Profile/AYYAR_V2
-+	NAME:=HAME AYYAR-V2
++	NAME:=AYYAR-V2
 +	PACKAGES:=kmod-usb-core kmod-usb2 kmod-ledtrig-netdev kmod-ledtrig-timer
 +endef
 +
