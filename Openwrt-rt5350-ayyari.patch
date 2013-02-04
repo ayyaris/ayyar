@@ -3,7 +3,7 @@ Index: target/linux/ramips/image/Makefile
 --- target/linux/ramips/image/Makefile (revision 35397)
 +++ target/linux/ramips/image/Makefile (working copy)
 @@ -544,6 +544,10 @@
-  $(call Image/Build/Template/$(fs_squash)/$(1),GENERIC_8M,mofi3500-3gn,MOFI3500-3GN,ttyS1,57600,phys)
+   $(call Image/Build/Template/$(fs_squash)/$(1),GENERIC_8M,mofi3500-3gn,MOFI3500-3GN,ttyS1,57600,phys)
  endef
  
 +define Image/Build/Profile/AYYAR_V2
