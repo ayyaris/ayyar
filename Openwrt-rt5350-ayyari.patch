@@ -1,7 +1,7 @@
 Index: target/linux/ramips/image/Makefile
 ===================================================================
 --- target/linux/ramips/image/Makefile (revision 35397)
-+++ target/linux/ramips/image/Makefile	(working copy)
++++ target/linux/ramips/image/Makefile (working copy)
 @@ -544,6 +544,10 @@
  	$(call Image/Build/Template/$(fs_squash)/$(1),GENERIC_8M,mofi3500-3gn,MOFI3500-3GN,ttyS1,57600,phys)
  endef
@@ -42,7 +42,7 @@ Index: target/linux/ramips/files/arch/mips/ralink/rt305x/Kconfig
  	select RALINK_DEV_GPIO_LEDS
  
 +config RT305X_MACH_AYYAR_V2
-+	bool "HAME AYYAR-V2 board support"
++	bool "AYYAR-V2 board support"
 +	select RALINK_DEV_GPIO_BUTTONS
 +	select RALINK_DEV_GPIO_LEDS
 +
@@ -184,10 +184,10 @@ Index: target/linux/ramips/rt305x/config-3.7
  CONFIG_RT305X_MACH_MZKW300NH2=y
  CONFIG_RT305X_MACH_NBG_419N=y
  CONFIG_RT305X_MACH_NW718=y
-Index: target/linux/ramips/rt305x/profiles/hame.mk
+Index: target/linux/ramips/rt305x/profiles/ayyar.mk
 ===================================================================
---- target/linux/ramips/rt305x/profiles/hame.mk	(revision 0)
-+++ target/linux/ramips/rt305x/profiles/hame.mk	(working copy)
+--- target/linux/ramips/rt305x/profiles/ayyar.mk	(revision 0)
++++ target/linux/ramips/rt305x/profiles/ayyar.mk	(working copy)
 @@ -0,0 +1,17 @@
 +#
 +# Copyright (C) 2013 Ayyari Abdennaby <ayyari@me.com>
@@ -202,7 +202,7 @@ Index: target/linux/ramips/rt305x/profiles/hame.mk
 +endef
 +
 +define Profile/AYYAR_V2/Description
-+	Package set for HAME AYYAR-V2 board
++	Package set for AYYAR-V2 board
 +endef
 +
 +$(eval $(call Profile,AYYAR_V2))
