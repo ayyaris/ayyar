@@ -56,7 +56,6 @@ Index: target/linux/ramips/files/arch/mips/ralink/rt305x/mach-ayyar-v2.c
 @@ -0,0 +1,108 @@
 +/*
 + *  AYYAR-V2 board support by Ayyari Abdennaby <ayyari@me.com>
-+ *  Based on previous work by arpunk, arteq, Heffer & p1vo from OpenWrt forum.
 + * 
 + *
 + *  This program is free software; you can redistribute it and/or modify it
