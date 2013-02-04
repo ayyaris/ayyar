@@ -3,7 +3,7 @@ Index: target/linux/ramips/image/Makefile
 --- target/linux/ramips/image/Makefile (revision 35397)
 +++ target/linux/ramips/image/Makefile (working copy)
 @@ -544,6 +544,10 @@
- 	$(call Image/Build/Template/$(fs_squash)/$(1),GENERIC_8M,mofi3500-3gn,MOFI3500-3GN,ttyS1,57600,phys)
+  $(call Image/Build/Template/$(fs_squash)/$(1),GENERIC_8M,mofi3500-3gn,MOFI3500-3GN,ttyS1,57600,phys)
  endef
  
 +define Image/Build/Profile/AYYAR_V2
@@ -42,7 +42,7 @@ Index: target/linux/ramips/files/arch/mips/ralink/rt305x/Kconfig
  	select RALINK_DEV_GPIO_LEDS
  
 +config RT305X_MACH_AYYAR_V2
-+	bool "AYYAR-V2 board support"
++	bool "HAME AYYAR-V2 board support"
 +	select RALINK_DEV_GPIO_BUTTONS
 +	select RALINK_DEV_GPIO_LEDS
 +
@@ -56,6 +56,7 @@ Index: target/linux/ramips/files/arch/mips/ralink/rt305x/mach-ayyar-v2.c
 @@ -0,0 +1,108 @@
 +/*
 + *  AYYAR-V2 board support by Ayyari Abdennaby <ayyari@me.com>
++ *  
 + * 
 + *
 + *  This program is free software; you can redistribute it and/or modify it
@@ -201,7 +202,7 @@ Index: target/linux/ramips/rt305x/profiles/ayyar.mk
 +endef
 +
 +define Profile/AYYAR_V2/Description
-+	Package set for AYYAR-V2 board
++	Package set for  AYYAR-V2 board
 +endef
 +
 +$(eval $(call Profile,AYYAR_V2))
