@@ -1,5 +1,5 @@
 --- /dev/null
-+++ b/target/linux/ramips/dts/AYYAR.dts
++++ target/linux/ramips/dts/AYYAR.dts
 @@ -0,0 +1,174 @@
 +/dts-v1/;
 +
