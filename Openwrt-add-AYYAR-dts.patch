@@ -1,0 +1,177 @@
+--- /dev/null
++++ b/target/linux/ramips/dts/AYYAR.dts
+@@ -0,0 +1,174 @@
++/dts-v1/;
++
++/include/ "rt5350.dtsi"
++
++/ {
++  compatible = "AYYAR", "ralink,rt5350-soc";
++	model = "AYYAR";
++
++	palmbus@10000000 {
++		sysc@0 {
++			ralink,pinmux = "spi", "uartlite", "sdram", "rgmii";
++			ralink,gpiomux = "i2c","jtag";
++			ralink,uartmux = "gpio";
++			ralink,wdtmux = <1>;
++		};
++
++		gpio0: gpio@600 {
++			status = "okay";
++		};
++
++		spi@b00 {
++			status = "okay";
++			m25p80@0 {
++				#address-cells = <1>;
++				#size-cells = <1>;
++				compatible = "mx25l6405d";
++				reg = <0 0>;
++				linux,modalias = "m25p80";
++				spi-max-frequency = <25000000>;
++		
++		partition@0 {
++			label = "u-boot";
++			reg = <0x0 0x30000>;
++			read-only;
++		};
++
++		partition@30000 {
++			label = "u-boot-env";
++			reg = <0x30000 0x10000>;
++			read-only;
++		};
++
++		factory: partition@40000 {
++			label = "factory";
++			reg = <0x40000 0x10000>;
++			read-only;
++		};
++
++		partition@50000 {
++			label = "firmware";
++			reg = <0x50000 0x7b0000>;
++		};
++			};
++		};
++	};
++	
++	RTWC_IN {
++		compatible = "gpio-export";
++		#size-cells = <0>;
++
++		gpio10 {
++			gpio-export,name = "gpio10";
++			gpios = <&gpio0 10 0>;
++		};
++
++		gpio13 {
++			gpio-export,name = "gpio13";
++			gpios = <&gpio0 13 0>;
++		};
++
++	};
++
++	RTWC_OUT {
++		compatible = "gpio-export";
++		#size-cells = <0>;
++
++		gpio7 {
++			gpio-export,name = "gpio7";
++			gpio-export,output = <0>;
++			gpios = <&gpio0 7 1>;
++		};
++		gpio8 {
++			gpio-export,name = "gpio8";
++			gpio-export,output = <0>;
++			gpios = <&gpio0 8 1>;
++		};
++		gpio9 {
++			gpio-export,name = "gpio9";
++			gpio-export,output = <0>;
++			gpios = <&gpio0 9 1>;
++		};
++
++		gpio11 {
++			gpio-export,name = "gpio11";
++			gpio-export,output = <0>;
++			gpios = <&gpio0 11 1>;
++		};
++		gpio12 {
++			gpio-export,name = "gpio12";
++			gpio-export,output = <0>;
++			gpios = <&gpio0 12 1>;
++		};
++		gpio14 {
++			gpio-export,name = "gpio14";
++			gpio-export,output = <0>;
++			gpios = <&gpio0 14 1>;
++		};
++	};
++
++	ethernet@10100000 {
++		status = "okay";
++	};
++
++	esw@10110000 {
++		status = "okay";
++		ralink,portmap = <0x2f>;
++	};
++
++	wmac@10180000 {
++		status = "okay";
++	};
++
++	ehci@101c0000 {
++		status = "okay";
++	};
++
++	ohci@101c1000 {
++		status = "okay";
++	};
++
++	RTWC_I2C {
++		compatible = "i2c-gpio";
++		gpios = <&gpio0 1 1 &gpio0 2 1>;
++
++		i2c-gpio,delay-us = <10>;
++
++		pcf0: iexp@38 {
++			#gpio-cells = <2>;
++			compatible = "inxp,pcf8574a";
++			reg = <0x64>;
++			gpio-controller;
++		};
++	};
++
++	gpio-leds {
++		compatible = "gpio-leds";
++		wlan {
++			label = "ayyar:green:wlan";
++			gpios = <&gpio0 17 1>;
++		};
++		power {
++			label = "ayyar:green:power";
++			gpios = <&gpio0 21 1>;
++		};
++	};
++
++	gpio-keys-polled {
++		compatible = "gpio-keys-polled";
++		#address-cells = <1>;
++		#size-cells = <0>;
++		poll-interval = <20>;
++		reset {
++			label = "reset";
++			gpios = <&gpio0 0 1>;
++			linux,code = <0x198>;
++		};
++	};
++
++	1-Wire {
++		compatible = "w1-gpio";
++		gpios = <&gpio0 7 1>;
++
++	};
++};
