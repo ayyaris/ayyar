@@ -1,6 +1,6 @@
 Index: target/linux/ramips/image/Makefile
 ===================================================================
---- target/linux/ramips/image/Makefile (revision 36362)
+--- target/linux/ramips/image/Makefile (revision 36877)
 +++ target/linux/ramips/image/Makefile (working copy)
 @@ -269,6 +269,8 @@
  argus_atp52b_mtd_size=7995392
@@ -11,10 +11,10 @@ Index: target/linux/ramips/image/Makefile
  Image/Build/Profile/BC2=$(call BuildFirmware/Default8M/$(1),$(1),bc2,BC2)
 
  broadway_mtd_size=7929856
-@@ -424,6 +424,7 @@
- $(call Image/Build/Profile/ALL0256N,$(1))
-	$(call Image/Build/Profile/ALL5002,$(1))
+@@ -442,6 +442,7 @@
+	$(call Image/Build/Profile/ALL5003,$(1))
 	$(call Image/Build/Profile/ARGUS_ATP52B,$(1))
+	$(call Image/Build/Profile/ASL26555,$(1))
 +	$(call Image/Build/Profile/AYYAR,$(1))
 	$(call Image/Build/Profile/BC2,$(1))
 	$(call Image/Build/Profile/BROADWAY,$(1))
@@ -34,7 +34,7 @@ Index: target/linux/ramips/rt305x/profiles/ayyar.mk
 +define Profile/AYYAR
 +	NAME:=AYYAR Realtime Web Control
 +	PACKAGES:=kmod-usb-core kmod-usb-ohci kmod-usb2 kmod-ledtrig-usbdev \
-+	kmod-i2c-core kmod-i2c-gpio kmod-gpio-pcf857x
++	kmod-i2c-core kmod-i2c-gpio kmod-gpio-pcf857x i2c_tool vsftpd
 +endef
 +
 +define Profile/AYYAR/Description
@@ -44,7 +44,7 @@ Index: target/linux/ramips/rt305x/profiles/ayyar.mk
 +$(eval $(call Profile,AYYAR))
 Index: target/linux/ramips/base-files/lib/ramips.sh
 ===================================================================
---- target/linux/ramips/base-files/lib/ramips.sh	(revision 36362)
+--- target/linux/ramips/base-files/lib/ramips.sh	(revision 36877)
 +++ target/linux/ramips/base-files/lib/ramips.sh	(working copy)
 @@ -39,6 +39,9 @@
 	*"AirLive Air3GII")
@@ -58,31 +58,31 @@ Index: target/linux/ramips/base-files/lib/ramips.sh
 		;;
 Index: target/linux/ramips/base-files/lib/upgrade/platform.sh
 ===================================================================
---- target/linux/ramips/base-files/lib/upgrade/platform.sh	(revision 36362)
+--- target/linux/ramips/base-files/lib/upgrade/platform.sh	(revision 36877)
 +++ target/linux/ramips/base-files/lib/upgrade/platform.sh	(working copy)
-@@ -22,6 +22,7 @@
-	all0239-3g | \
+@@ -23,6 +23,7 @@
 	all0256n | \
 	all5002 | \
+	all5003 | \
 +	ayyar | \
+	asl26555 | \
 	bc2 | \
 	broadway | \
-	carambola | \
 Index: target/linux/ramips/base-files/lib/preinit/06_set_iface_mac
 ===================================================================
---- target/linux/ramips/base-files/lib/preinit/06_set_iface_mac	(revision 36362)
+--- target/linux/ramips/base-files/lib/preinit/06_set_iface_mac	(revision 36877)
 +++ target/linux/ramips/base-files/lib/preinit/06_set_iface_mac	(working copy)
-@@ -51,6 +51,7 @@
-	all0239-3g |\
+@@ -54,6 +54,7 @@
 	all0256n |\
 	all5002 |\
-+	ayyar | \
+	all5003 |\
++	ayyar |\
 	carambola |\
 	dir-615-h1 |\
 	fonera20n |\
 Index: target/linux/ramips/base-files/etc/diag.sh
 ===================================================================
---- target/linux/ramips/base-files/etc/diag.sh	(revision 36362)
+--- target/linux/ramips/base-files/etc/diag.sh	(revision 36877)
 +++ target/linux/ramips/base-files/etc/diag.sh	(working copy)
 @@ -15,6 +15,9 @@
 	argus-atp52b)
@@ -96,7 +96,7 @@ Index: target/linux/ramips/base-files/etc/diag.sh
 		;;
 Index: target/linux/ramips/base-files/etc/hotplug.d/firmware/10-rt2x00-eeprom
 ===================================================================
---- target/linux/ramips/base-files/etc/hotplug.d/firmware/10-rt2x00-eeprom	(revision 36362)
+--- target/linux/ramips/base-files/etc/hotplug.d/firmware/10-rt2x00-eeprom	(revision 36877)
 +++ target/linux/ramips/base-files/etc/hotplug.d/firmware/10-rt2x00-eeprom	(working copy)
 @@ -59,6 +59,7 @@
 	all0256n | \
@@ -108,7 +108,7 @@ Index: target/linux/ramips/base-files/etc/hotplug.d/firmware/10-rt2x00-eeprom
 	broadway | \
 Index: target/linux/ramips/base-files/etc/uci-defaults/01_leds
 ===================================================================
---- target/linux/ramips/base-files/etc/uci-defaults/01_leds	(revision 36362)
+--- target/linux/ramips/base-files/etc/uci-defaults/01_leds	(revision 36877)
 +++ target/linux/ramips/base-files/etc/uci-defaults/01_leds	(working copy)
 @@ -35,6 +35,9 @@
 		ucidef_set_led_rssi "rssihigh" "RSSIHIGH" "all0256n:green:rssihigh" "wlan0" "70" "100" "-69" "8"
@@ -122,12 +122,12 @@ Index: target/linux/ramips/base-files/etc/uci-defaults/01_leds
 		;;
 Index: target/linux/ramips/base-files/etc/uci-defaults/02_network
 ===================================================================
---- target/linux/ramips/base-files/etc/uci-defaults/02_network	(revision 36362)
+--- target/linux/ramips/base-files/etc/uci-defaults/02_network	(revision 36877)
 +++ target/linux/ramips/base-files/etc/uci-defaults/02_network	(working copy)
-@@ -41,6 +41,7 @@
-	w150m | \
+@@ -42,6 +42,7 @@
 	all0256n | \
 	all5002 | \
+	all5003 | \
 +	ayyar | \
 	broadway | \
 	wnce2001)
