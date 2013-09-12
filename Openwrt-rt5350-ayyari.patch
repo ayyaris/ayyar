@@ -1,24 +1,24 @@
 Index: target/linux/ramips/image/Makefile
 ===================================================================
---- target/linux/ramips/image/Makefile (revision 36877)
+--- target/linux/ramips/image/Makefile (revision 38000)
 +++ target/linux/ramips/image/Makefile (working copy)
-@@ -269,6 +269,8 @@
- argus_atp52b_mtd_size=7995392
- Image/Build/Profile/ARGUS_ATP52B=$(call BuildFirmware/CustomFlash/$(1),$(1),argus_atp52b,ARGUS_ATP52B,$(argus_atp52b_mtd_size))
- 
+@@ -291,6 +291,8 @@
+
+ Image/Build/Profile/AIR3GII=$(call BuildFirmware/Default4M/$(1),$(1),air3gii,AIR3GII)
+
 +Image/Build/Profile/AYYAR=$(call BuildFirmware/Default8M/$(1),$(1),ayyar,AYYAR,$(ralink_default_fw_size_8M))
 +
- Image/Build/Profile/BC2=$(call BuildFirmware/Default8M/$(1),$(1),bc2,BC2)
-
- broadway_mtd_size=7929856
-@@ -442,6 +442,7 @@
+ define BuildFirmware/UIMAGE_8M
+	$(call MkCombineduImage,$(1),$(2),$(call mkcmdline,$(3),$(4),$(5)) $(call mkmtd/$(6),$(mtdlayout_8M)),$(kernel_size_8M),$(rootfs_size_8M),$(7))
+ endef
+@@ -498,6 +498,7 @@
+	$(call Image/Build/Profile/ALL5002,$(1))
 	$(call Image/Build/Profile/ALL5003,$(1))
 	$(call Image/Build/Profile/ARGUS_ATP52B,$(1))
-	$(call Image/Build/Profile/ASL26555,$(1))
 +	$(call Image/Build/Profile/AYYAR,$(1))
+	$(call Image/Build/Profile/ASL26555,$(1))
+	$(call Image/Build/Profile/AWM002-EVB,$(1))
 	$(call Image/Build/Profile/BC2,$(1))
-	$(call Image/Build/Profile/BROADWAY,$(1))
-	$(call Image/Build/Profile/CARAMBOLA,$(1))
 Index: target/linux/ramips/rt305x/profiles/ayyar.mk
 ===================================================================
 --- target/linux/ramips/rt305x/profiles/ayyar.mk	(revision 0)
@@ -34,7 +34,7 @@ Index: target/linux/ramips/rt305x/profiles/ayyar.mk
 +define Profile/AYYAR
 +	NAME:=AYYAR Realtime Web Control
 +	PACKAGES:=kmod-usb-core kmod-usb-ohci kmod-usb2 kmod-ledtrig-usbdev \
-+	kmod-i2c-core kmod-i2c-gpio kmod-gpio-pcf857x i2c_tool vsftpd
++	kmod-i2c-core kmod-i2c-ralink kmod-i2c-gpio i2c_tool vsftpd
 +endef
 +
 +define Profile/AYYAR/Description
@@ -44,9 +44,9 @@ Index: target/linux/ramips/rt305x/profiles/ayyar.mk
 +$(eval $(call Profile,AYYAR))
 Index: target/linux/ramips/base-files/lib/ramips.sh
 ===================================================================
---- target/linux/ramips/base-files/lib/ramips.sh	(revision 36877)
+--- target/linux/ramips/base-files/lib/ramips.sh	(revision 38000)
 +++ target/linux/ramips/base-files/lib/ramips.sh	(working copy)
-@@ -39,6 +39,9 @@
+@@ -25,6 +25,9 @@
 	*"AirLive Air3GII")
 		name="air3gii"
 		;;
@@ -58,35 +58,35 @@ Index: target/linux/ramips/base-files/lib/ramips.sh
 		;;
 Index: target/linux/ramips/base-files/lib/upgrade/platform.sh
 ===================================================================
---- target/linux/ramips/base-files/lib/upgrade/platform.sh	(revision 36877)
+--- target/linux/ramips/base-files/lib/upgrade/platform.sh	(revision 38000)
 +++ target/linux/ramips/base-files/lib/upgrade/platform.sh	(working copy)
-@@ -23,6 +23,7 @@
-	all0256n | \
-	all5002 | \
+@@ -25,6 +25,7 @@
 	all5003 | \
-+	ayyar | \
 	asl26555 | \
+	awm002-evb | \
++	ayyar | \
 	bc2 | \
 	broadway | \
+	carambola | \
 Index: target/linux/ramips/base-files/lib/preinit/06_set_iface_mac
 ===================================================================
---- target/linux/ramips/base-files/lib/preinit/06_set_iface_mac	(revision 36877)
+--- target/linux/ramips/base-files/lib/preinit/06_set_iface_mac	(revision 38000)
 +++ target/linux/ramips/base-files/lib/preinit/06_set_iface_mac	(working copy)
-@@ -54,6 +54,7 @@
-	all0256n |\
+@@ -58,6 +58,7 @@
 	all5002 |\
 	all5003 |\
+	awm002-evb |\
 +	ayyar |\
 	carambola |\
 	dir-615-h1 |\
 	fonera20n |\
 Index: target/linux/ramips/base-files/etc/diag.sh
 ===================================================================
---- target/linux/ramips/base-files/etc/diag.sh	(revision 36877)
+--- target/linux/ramips/base-files/etc/diag.sh	(revision 38000)
 +++ target/linux/ramips/base-files/etc/diag.sh	(working copy)
-@@ -15,6 +15,9 @@
-	argus-atp52b)
-		status_led="argus-atp52b:green:run"
+@@ -18,6 +18,9 @@
+	asl26555)
+		status_led="asl26555:green:power"
 		;;
 +	ayyar)
 +		status_led="ayyar:green:power"
@@ -96,23 +96,23 @@ Index: target/linux/ramips/base-files/etc/diag.sh
 		;;
 Index: target/linux/ramips/base-files/etc/hotplug.d/firmware/10-rt2x00-eeprom
 ===================================================================
---- target/linux/ramips/base-files/etc/hotplug.d/firmware/10-rt2x00-eeprom	(revision 36877)
+--- target/linux/ramips/base-files/etc/hotplug.d/firmware/10-rt2x00-eeprom	(revision 38000)
 +++ target/linux/ramips/base-files/etc/hotplug.d/firmware/10-rt2x00-eeprom	(working copy)
-@@ -59,6 +59,7 @@
-	all0256n | \
-	all5002 | \
+@@ -62,6 +62,7 @@
+	all5003 | \
 	argus-atp52b | \
+	awm002-evb | \
 +	ayyar | \
 	bc2 | \
 	br6425 | \
 	broadway | \
 Index: target/linux/ramips/base-files/etc/uci-defaults/01_leds
 ===================================================================
---- target/linux/ramips/base-files/etc/uci-defaults/01_leds	(revision 36877)
+--- target/linux/ramips/base-files/etc/uci-defaults/01_leds	(revision 38000)
 +++ target/linux/ramips/base-files/etc/uci-defaults/01_leds	(working copy)
-@@ -35,6 +35,9 @@
-		ucidef_set_led_rssi "rssihigh" "RSSIHIGH" "all0256n:green:rssihigh" "wlan0" "70" "100" "-69" "8"
-		set_wifi_led "rt2800pci-phy0::radio"
+@@ -41,6 +41,9 @@
+		set_wifi_led "asl26555:green:wlan"
+		set_usb_led "asl26555:green:3g"
 		;;
 +	ayyar)
 +		set_wifi_led "rt2800pci-phy0::radio"
@@ -122,12 +122,12 @@ Index: target/linux/ramips/base-files/etc/uci-defaults/01_leds
 		;;
 Index: target/linux/ramips/base-files/etc/uci-defaults/02_network
 ===================================================================
---- target/linux/ramips/base-files/etc/uci-defaults/02_network	(revision 36877)
+--- target/linux/ramips/base-files/etc/uci-defaults/02_network	(revision 38000)
 +++ target/linux/ramips/base-files/etc/uci-defaults/02_network	(working copy)
 @@ -42,6 +42,7 @@
-	all0256n | \
 	all5002 | \
 	all5003 | \
+	awm002-evb | \
 +	ayyar | \
 	broadway | \
 	wnce2001)
